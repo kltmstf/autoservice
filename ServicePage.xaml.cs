@@ -32,14 +32,13 @@ namespace lab3
 
             UpdateService();
         }
-
         private void UpdateService()
         {
             var currentService = Lapitskaya_autoserviceEntities.GetContext().Service.ToList();
 
-            if(ComboType.SelectedIndex == 0)
+            if (ComboType.SelectedIndex == 0)
             {
-                currentService = currentService.Where(p => (Convert.ToInt32(p.Discount) >= 0 && Convert.ToInt32(p.Discount) <= 100)).ToList();  
+                currentService = currentService.Where(p => (Convert.ToInt32(p.Discount) >= 0 && Convert.ToInt32(p.Discount) <= 100)).ToList();
 
             }
             if (ComboType.SelectedIndex == 1)
@@ -50,7 +49,7 @@ namespace lab3
             {
                 currentService = currentService.Where(p => (Convert.ToInt32(p.Discount) >= 5 && Convert.ToInt32(p.Discount) < 15)).ToList();
             }
-            if(ComboType.SelectedIndex == 3)
+            if (ComboType.SelectedIndex == 3)
             {
                 currentService = currentService.Where(p => (Convert.ToInt32(p.Discount) >= 15 && Convert.ToInt32(p.Discount) < 30)).ToList();
             }
@@ -67,16 +66,15 @@ namespace lab3
 
             ServiceListView.ItemsSource = currentService.ToList();
 
-            if(RButtonDown.IsChecked.Value)
+            if (RButtonDown.IsChecked.Value)
             {
                 ServiceListView.ItemsSource = currentService.OrderByDescending(p => p.Cost).ToList();
             }
-            if(RButtonUp.IsChecked.Value)
+            if (RButtonUp.IsChecked.Value)
             {
                 ServiceListView.ItemsSource = currentService.OrderBy(p => p.Cost).ToList();
             }
         }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Manager.MainFrame.Navigate(new AddEditPage());
@@ -103,3 +101,4 @@ namespace lab3
         }
     }
 }
+
