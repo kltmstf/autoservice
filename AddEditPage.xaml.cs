@@ -40,21 +40,53 @@ namespace lab3
 
             if (string.IsNullOrWhiteSpace(_currentService.Title))
                 errors.AppendLine("Укажите название услуги");
+
             if (_currentService.Cost <= 0)
                 errors.AppendLine("Укажите стоимость услуги");
-            if (_currentService.Discount < 0)
-                errors.AppendLine("Укажите скидку");
-            if (_currentService.Discount > 100)
-                errors.AppendLine("Укажите скидку");
-            if (_currentService.Discount == null)
-                errors.AppendLine("Укажите скидку");
-            if (string.IsNullOrWhiteSpace(_currentService.Duration))
+
+            if (_currentService.DiscountInt < 0)
+                errors.AppendLine("Скидка не может быть меньше 0");
+
+            if (_currentService.DiscountInt > 100)
+                errors.AppendLine("Скидка не может быть больше 100");
+
+            /*if (_currentService.DiscountInt == null)
+                errors.AppendLine("Укажите скидку");*/
+
+            if (_currentService.Duration <= 0)
                 errors.AppendLine("Укажите длительность услуги");
+
+            if (_currentService.Duration > 240)
+                errors.AppendLine("Длительность не может быть больше 240");
+
+
             if(errors.Length > 0)
             {
                 MessageBox.Show(errors.ToString());
                 return;
             }
+
+            var allServices = Lapitskaya_autoserviceEntities.GetContext().Service.ToList();
+            allServices = allServices.Where(p => p.Title == _currentService.Title).ToList();
+
+            if (allServices.Count == 0)
+            {
+                if (_currentService.ID == 0)
+                    Lapitskaya_autoserviceEntities.GetContext().Service.Add(_currentService);
+                try
+                {
+                    Lapitskaya_autoserviceEntities.GetContext().Service.Add(_currentService);
+                    MessageBox.Show("информация сохранена");
+                    Manager.MainFrame.GoBack();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message.ToString());
+                }
+            }
+            else
+                MessageBox.Show("уже существует такая услуга");  
+
             if (_currentService.ID == 0)
                 Lapitskaya_autoserviceEntities.GetContext().Service.Add(_currentService);
             try
